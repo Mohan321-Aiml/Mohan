@@ -1,0 +1,40 @@
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+char** summaryRanges(int* nums, int numsSize, int* returnSize) {
+
+// Declaring of an Array (string datatype ) to store the ouput     
+char** ans = (char**)malloc(numsSize * sizeof(char*));
+    *returnSize=0;
+    int i=0;
+
+//begin the outter loop to check every num in array
+    while (i<numsSize)
+    {
+       int start=nums[i];
+
+//Inner loop to avoid any Overflow error  as i+1 can go out of Size at the last integer 
+
+       while (i<numsSize-1 && nums[i+1]==nums[i]+1) // if the int at next index is same as expected that is increment by 1 ...
+       {i++;} // Moving to next int as nothing needs to be done 
+
+// when inner loop breaks
+       ans[*returnSize] = (char*)malloc(25 * sizeof(char)); // 25 is enough for most formatted strings
+
+//check if the number is still same , 12-->12
+
+       if (start != nums[i]) // if not
+       {
+         sprintf(ans[*returnSize], "%d->%d", start,nums[i]);
+       }
+
+        //if is
+       else { sprintf(ans[*returnSize], "%d", nums[i]);}
+       (*returnSize)++;
+       i++;
+
+    }//outer loop ends
+
+    return ans; //return the answer
+}     
+        
