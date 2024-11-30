@@ -1,0 +1,49 @@
+#define maxOutput 200
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int bitCount(int nums) {
+    int c = 0;
+    while (nums > 0) {
+        nums &= (nums - 1);
+        c++;
+    }
+    return c;
+}
+
+char** readBinaryWatch(int turnedOn, int* returnSize) {
+    char** ans = malloc(maxOutput * sizeof(char*));
+    int k = 0; // Tracks solution
+    for (int h = 0; h <= 11; h++) {
+        for (int m = 0; m <= 59; m++) {
+            if ((bitCount(h) + bitCount(m)) == turnedOn) {
+                int strSize = 5;
+                if (h > 9) {
+                    strSize = 6;
+                }
+                ans[k] = malloc(strSize * sizeof(char));
+                // Build Out Solution
+                int t = 0;
+                // Print Hour
+                if (h > 9) {
+                    ans[k][t++] = '0' + (h / 10);
+                }
+                ans[k][t++] = '0' + (h % 10);
+                ans[k][t++] = ':';
+                // Print Minutes
+                if (m < 10) {
+                    // Leading Zero for minutes
+                    ans[k][t++] = '0';
+                } else {
+                    ans[k][t++] = '0' + (m / 10);
+                }
+                ans[k][t++] = '0' + (m % 10);
+                ans[k][t] = '\0';
+                k++;
+            }
+        }
+    }
+
+    *returnSize = k;
+    return ans;
+}
