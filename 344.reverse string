@@ -1,0 +1,8 @@
+void reverseString(char* s, int sSize) {
+    char g;
+    for(int i=(sSize-1),j=0;i>=sSize/2;i--,j++){
+        g=s[i];
+        s[i]=s[j];
+        s[j]=g;
+    }
+}
