@@ -1,0 +1,19 @@
+bool isPerfectSquare(int num) {
+    if (num==1) return true;
+    long long high=num;
+    long long low=-1;
+    long long integer=num/2;
+    
+    while(true){
+        if (high-low==1) return false;
+        if(integer*integer>num){
+            high=integer;
+            integer= integer - (integer-low) / 2;
+        }
+        else if(integer*integer<num){
+            low=integer;
+            integer = integer + (high - integer) / 2;  
+        }
+        else return true;     
+    }
+}
