@@ -1,0 +1,57 @@
+/**
+ * Definition for a Node.
+ * struct Node {
+ *     int val;
+ *     int numChildren;
+ *     struct Node** children;
+ * };
+ */
+
+
+int* postorder(struct Node* root, int* returnSize) {
+    struct Node** stack = NULL;
+    int stackSize = 0;
+    int stackCapacity = 0;
+
+    int* traverse = NULL;
+    int traverseSize = 0;
+    int traverseCapacity = 0;
+
+    if (root != NULL) {
+        stackCapacity = 4;
+        stack = malloc(stackCapacity * sizeof(struct Node*));
+        stack[stackSize++] = root;
+
+        while (stackSize > 0) {
+            struct Node* node = stack[--stackSize];
+            if (traverseSize == traverseCapacity) {
+                traverseCapacity = traverseCapacity == 0 ? 4 : traverseCapacity * 2;
+                traverse = realloc(traverse, traverseCapacity * sizeof(int));
+            }
+
+            traverse[traverseSize++] = node->val;
+            for (int i = 0; i < node->numChildren; i++) {
+                if (stackSize == stackCapacity) {
+                    stackCapacity *= 2;
+                    stack = realloc(stack, stackCapacity * sizeof(struct Node*));
+                }
+                stack[stackSize++] = node->children[i];
+            }
+        }
+
+        int* result = malloc(traverseSize * sizeof(int));
+        for (int i = 0; i < traverseSize; i++) {
+            result[i] = traverse[traverseSize - i - 1];
+        }
+        
+        free(traverse);
+        free(stack);
+
+        *returnSize = traverseSize;
+        return result;
+    }
+
+    // Handle the case where root is NULL
+    *returnSize = 0;
+    return NULL;
+}
