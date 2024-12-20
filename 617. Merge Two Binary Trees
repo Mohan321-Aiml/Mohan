@@ -1,0 +1,38 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+
+ void findnext(struct TreeNode* root1, struct TreeNode* root2) {
+
+    root1->val += root2->val;
+    
+    if (root1->left) {
+        if(root2->left) {
+            findnext(root1->left, root2->left);
+        }
+    } else if (root2->left) {
+        root1->left = root2->left;
+    }
+
+    if (root1->right) {
+        if(root2->right) {
+            findnext(root1->right, root2->right);
+        }
+    } else if (root2->right) {
+        root1->right = root2->right;
+    }
+ } 
+
+struct TreeNode* mergeTrees(struct TreeNode* root1, struct TreeNode* root2) {
+    if ((root1 == NULL) && (root2 == NULL)) return NULL;
+    if (root1 == NULL) return root2;
+    if (root2 == NULL) return root1;
+
+    findnext(root1, root2);
+    return root1;
+}
