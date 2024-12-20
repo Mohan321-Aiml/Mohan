@@ -1,0 +1,13 @@
+int findComplement(int num) {
+    long long a = 1;
+    int b = 1 , c = 0;
+
+    for (int i = 0; i < 32; i++) {
+        if (num & (a)) {
+            c = b;
+        }
+        a <<= 1;
+        b|=a;
+    }
+    return (num^c);
+}
