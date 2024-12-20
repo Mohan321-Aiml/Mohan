@@ -1,0 +1,25 @@
+char* convertToBase7(int num) {
+    int n=abs(num);
+    int i=0;
+    char* num2=(char*)malloc(100*(sizeof(char)));
+    
+    if(n==0){
+        num2[i++]='0';
+        num2[i]='\0';
+        return num2;    
+    }
+    while(n!=0){
+        num2[i++]=n%7+'0';
+        n=n/7;
+    }
+    if(num<0){
+        num2[i++]='-';
+    }
+    for (int j = 0; j < i / 2; j++) {
+        char temp = num2[j];
+        num2[j] = num2[i - j - 1];
+        num2[i - j - 1] = temp;
+    }
+    num2[i]='\0';
+    return num2;
+}
