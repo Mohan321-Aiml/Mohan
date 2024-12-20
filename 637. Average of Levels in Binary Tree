@@ -1,0 +1,133 @@
+typedef struct QNODE_T
+{
+    struct TreeNode* pN;
+    int level;
+    struct QNODE_T *pNext;
+} QNODE, *PQNODE;
+
+typedef struct QUEUE_T
+{
+    PQNODE pHead;
+    int size;
+} QUEUE, *PQUEUE;
+
+// enqueue
+// returns newHead;
+void enqueue(PQUEUE pQ, struct TreeNode* pNode1, int level)
+{
+    PQNODE pNode = (PQNODE)malloc(sizeof(QNODE));
+    if(pNode == NULL)
+    {
+        return;
+    }
+
+    pNode->pN = pNode1;
+    pNode->level = level;
+    pNode->pNext = pQ->pHead;
+
+    pQ->pHead = pNode;
+    pQ->size++;
+
+    //printf("enqueue %u , size = %d \n", id, pQ->size);
+}
+
+// dequeue
+PQNODE dequeue(PQUEUE pQ)
+{
+    PQNODE pNode = pQ->pHead;
+
+    //printf("dequeue size = %d \n", pQ->size);
+
+    if(pQ->size == 0)
+    {
+        return NULL;
+    }
+
+    if(pQ->size == 1)
+    {
+        
+        pQ->size--;
+        pQ->pHead = NULL;
+
+        return pNode;
+    }
+
+    while(pNode->pNext->pNext != NULL)
+    {
+        pNode = pNode->pNext;
+    }
+
+    // pNode point to 1 before last element
+    PQNODE pLast = pNode->pNext;
+    pQ->size--;
+    pNode->pNext = NULL;
+    return pLast;
+
+}
+
+int qSize(PQUEUE pQ)
+{
+    return pQ->size;
+}
+
+
+
+
+
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+double* averageOfLevels(struct TreeNode* root, int* returnSize) {
+    double *pAns = (double*)calloc(1000, sizeof(double));
+    int *pCounts = (int*)calloc(1000, sizeof(int));
+
+
+    // BFS from root
+    QUEUE q = {0};
+    q.pHead = NULL;
+    q.size = 0;
+
+    enqueue(&q, root, 0);
+
+    int levels = 0;
+    
+    while(qSize(&q) != 0)
+    {
+        PQNODE pCurrNode =  dequeue(&q);
+
+        if(pCounts[pCurrNode->level] == 0)
+        {
+            levels++;
+        }
+        pCounts[pCurrNode->level]++;
+        pAns[pCurrNode->level] += pCurrNode->pN->val;
+
+        if(pCurrNode->pN->right != NULL)
+        {
+            enqueue(&q, pCurrNode->pN->right, pCurrNode->level + 1);
+        }
+
+        if(pCurrNode->pN->left != NULL)
+        {
+            enqueue(&q, pCurrNode->pN->left, pCurrNode->level + 1);
+        }
+    }
+
+    for(int i = 0 ; i < levels ; i++)
+    {
+        pAns[i] = pAns[i] / pCounts[i];
+    }
+
+    *returnSize = levels;
+
+    return pAns;
+}
