@@ -1,0 +1,13 @@
+int cmp(const void* a, const void* b){
+    return *(int*)a - *(int*)b;
+}
+int distributeCandies(int* c, int cs) {
+    qsort(c, cs, sizeof(int), cmp);
+    int cnt = 1;
+    for(int i=1;i<cs;i++){
+        if(c[i]!=c[i-1]){
+            cnt++;
+        }
+    }
+    return cnt < cs/2 ? cnt: cs/2;
+}
