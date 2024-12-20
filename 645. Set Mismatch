@@ -1,0 +1,19 @@
+int* findErrorNums(int* nums, int size, int* returnSize) {
+    int hash[size+1];
+    for(int i=0;i<=size;i++) hash[i]=0;
+    for(int i=0;i<size;i++)
+    {
+        hash[nums[i]]++;
+    }
+    int miss,repeat;
+    for(int i=1;i<=size;i++)
+    {
+        if(hash[i]==2) repeat = i;
+        if(hash[i]==0) miss = i;
+    }
+    int *arr = malloc(8);
+    arr[0]=repeat;
+    arr[1]=miss;
+    *returnSize = 2;
+    return arr;
+}
