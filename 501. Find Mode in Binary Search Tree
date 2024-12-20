@@ -1,0 +1,88 @@
+#define RESET_VAl !root->left ? root->val : minValue - 1
+void findMaxFrequency(struct TreeNode* root, int* curVal, int* curCount,
+                      int* maxCount) {
+    if (!root)
+        return;
+    findMaxFrequency(root->left, curVal, curCount, maxCount);
+    if (root->val == *curVal) {
+        (*curCount)++;
+    } else {
+        if (*curCount > *maxCount) {
+            *maxCount = *curCount;
+        }
+        *curVal = root->val;
+        *curCount = 1;
+    }
+    findMaxFrequency(root->right, curVal, curCount, maxCount);
+}
+
+void findNumOfModes(struct TreeNode* root, int* curVal, int* curCount,
+                    int* maxFrequency, int* modesCount) {
+    if (!root)
+        return;
+    findNumOfModes(root->left, curVal, curCount, maxFrequency, modesCount);
+    if (root->val == *curVal) {
+        (*curCount)++;
+        if (*curCount == *maxFrequency) {
+            (*modesCount)++;
+        }
+    } else {
+        *curVal = root->val;
+        *curCount = 1;
+        if (*curCount == *maxFrequency) {
+            (*modesCount)++;
+        }
+    }
+    findNumOfModes(root->right, curVal, curCount, maxFrequency, modesCount);
+}
+
+void collectModes(struct TreeNode* root, int* curVal, int* curCount,
+                  int* maxFrequency, int* modes, int* index) {
+    if (!root) {
+        return;
+    }
+    collectModes(root->left, curVal, curCount, maxFrequency, modes, index);
+    if (root->val == *curVal) {
+        (*curCount)++;
+        if (*curCount == *maxFrequency) {
+            modes[*index] = root->val;
+            (*index)++;
+        }
+    } else {
+        *curVal = root->val;
+        *curCount = 1;
+        if (*curCount == *maxFrequency) {
+            modes[*index] = root->val;
+            (*index)++;
+        }
+    }
+    collectModes(root->right, curVal, curCount, maxFrequency, modes, index);
+}
+
+int* findMode(struct TreeNode* root, int* returnSize) {
+    if (!root) {
+        *returnSize = 0;
+        return NULL;
+    }
+    int minValue = -pow(10, 5);
+    int curVal = RESET_VAl;
+    int curCount = 0;
+    int maxCount = 0;
+    findMaxFrequency(root, &curVal, &curCount, &maxCount);
+    if (curCount > maxCount)
+        maxCount = curCount; // Check after the last value
+
+    int modesCount = 0;
+    curVal = RESET_VAl;
+    curCount = 0;
+    findNumOfModes(root, &curVal, &curCount, &maxCount, &modesCount);
+
+    int* arrayModes = malloc(sizeof(int) * modesCount);
+    int index = 0;
+    curVal = RESET_VAl;
+    curCount = 0;
+    collectModes(root, &curVal, &curCount, &maxCount, arrayModes, &index);
+
+    *returnSize = index;
+    return arrayModes;
+}
