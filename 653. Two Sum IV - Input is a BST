@@ -1,0 +1,31 @@
+bool findVal(struct TreeNode* root, int val, struct TreeNode* current){
+    if (root==NULL){
+        return 0;
+    }
+    if (root->val==val && root!=current) {
+        return 1;
+    }
+    if (root->val>val) {
+        return findVal(root->left, val, current);
+    } else {
+        return findVal(root->right, val, current);
+    }
+}
+
+bool findTargetRec(struct TreeNode* root, int k, struct TreeNode* node) {
+    if (node==NULL) {
+        return 0;
+    }
+    if (findVal(root, k - node->val, node)) {
+        return 1;
+    } else {
+        return findTargetRec(root, k, node->left) || findTargetRec(root, k, node->right);
+    }
+}
+
+bool findTarget(struct TreeNode* root, int k) {
+    if (root->right==NULL && root->left==NULL) {
+        return 0;
+    }
+    return findTargetRec(root, k, root);
+}
