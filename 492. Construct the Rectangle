@@ -1,0 +1,17 @@
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* constructRectangle(int area, int* returnSize) {
+    int *ans=malloc(sizeof(int)*2);
+    *returnSize=2;
+    int length=sqrt(area);
+    while(length>=1){
+        if(area%length==0){
+            ans[0]=area/length;
+            ans[1]=length; 
+            return ans;
+        }
+        length--;
+    }
+    return ans;
+}
