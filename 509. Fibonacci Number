@@ -1,0 +1,29 @@
+
+
+int fib(int n)
+{
+
+    int x=0;
+    int y=1,z=0;
+
+    if(n==0)
+    {
+        return 0;
+    }
+    int sum=x+y;
+
+    for(int i=3;i<=n;i++)
+    {
+         x=y;
+        y=z;
+        z=x+y;
+        sum=sum+z;
+
+       
+        
+
+    }
+
+    return sum;
+
+}
