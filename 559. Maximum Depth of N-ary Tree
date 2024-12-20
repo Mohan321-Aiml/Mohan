@@ -1,0 +1,22 @@
+/**
+ * Definition for a Node.
+ * struct Node {
+ *     int val;
+ *     int numChildren;
+ *     struct Node** children;
+ * };
+ */
+int maxDepth(struct Node* root) {
+    if(root == NULL){
+        return 0;
+    }
+    int maxChildDepth = 0, i;
+    for(i = 0; i < root->numChildren; i++){
+        int childDepth = maxDepth(root->children[i]);
+        if(childDepth > maxChildDepth){
+            maxChildDepth = childDepth;
+        }
+    }
+
+    return maxChildDepth + 1;
+}
